@@ -1,0 +1,71 @@
+﻿@page
+@model WebApplication2.Pages.ProductsModel
+
+<h2>Лекарства</h2>
+
+<form method="post" asp-page-handler="Create">
+    <h3>Добавить лекарство</h3>
+    <input type="text" name="Name" required placeholder="Название" />
+    <input type="text" name="DosageForm" required placeholder="Форма выпуска" />
+    <input type="number" name="Price" required placeholder="Цена" />
+    <input type="number" name="QuantityInStock" required placeholder="Количество в наличии" />
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="post" asp-page-handler="Search">
+    <h3>Поиск лекарств</h3>
+    <input type="text" name="searchTerm" placeholder="Поиск по названию или форме выпуска..." />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.Medicines == null || !Model.Medicines.Any())
+{
+    <p>Нет лекарств.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Форма выпуска</th>
+                <th>Цена</th>
+                <th>Количество в наличии</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Medicines)
+            {
+                <tr>
+                    <td>@product.MedicineID</td>
+                    <td>@product.Name</td>
+                    <td>@product.DosageForm</td>
+                    <td>@product.Price</td>
+                    <td>@product.QuantityInStock</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="medicineID" value="@product.MedicineID" />
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <a asp-page-handler="Edit" asp-route-medicineID="@product.MedicineID">Редактировать</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Medicine != null)
+{
+    <h3>Редактировать лекарство</h3>
+    <form method="post" asp-page-handler="Edit">
+        <input type="hidden" name="MedicineID" value="@Model.Medicine.MedicineID" />
+        <input type="text" name="Name" value="@Model.Medicine.Name" required />
+        <input type="text" name="DosageForm" value="@Model.Medicine.DosageForm" required />
+        <input type="number" name="Price" value="@Model.Medicine.Price" required />
+        <input type="number" name="QuantityInStock" value="@Model.Medicine.QuantityInStock" required />
+        <button type="submit">Сохранить изменения</button>
+    </form>
+}

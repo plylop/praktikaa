@@ -1,0 +1,67 @@
+﻿@page
+@model WebApplication2.Pages.PharmaciesModel
+
+<h2>Аптеки</h2>
+
+<form method="post" asp-page-handler="Create">
+    <h3>Добавить аптеку</h3>
+    <input type="text" name="Name" required placeholder="Название" />
+    <input type="text" name="Address" required placeholder="Адрес" />
+    <input type="text" name="Phone" required placeholder="Телефон" />
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="post" asp-page-handler="Search">
+    <h3>Поиск аптек</h3>
+    <input type="text" name="searchTerm" placeholder="Поиск по названию или адресу..." />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.Pharmacies == null || !Model.Pharmacies.Any())
+{
+    <p>Нет аптек.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Адрес</th>
+                <th>Телефон</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pharmacy in Model.Pharmacies)
+            {
+                <tr>
+                    <td>@pharmacy.PharmacyID</td>
+                    <td>@pharmacy.Name</td>
+                    <td>@pharmacy.Address</td>
+                    <td>@pharmacy.Phone</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="pharmacyID" value="@pharmacy.PharmacyID" />
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <a asp-page-handler="Edit" asp-route-pharmacyID="@pharmacy.PharmacyID">Редактировать</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Pharmacy != null)
+{
+    <h3>Редактировать аптеку</h3>
+    <form method="post" asp-page-handler="Edit">
+        <input type="hidden" name="PharmacyID" value="@Model.Pharmacy.PharmacyID" />
+        <input type="text" name="Name" value="@Model.Pharmacy.Name" required />
+        <input type="text" name="Address" value="@Model.Pharmacy.Address" required />
+        <input type="text" name="Phone" value="@Model.Pharmacy.Phone" required />
+        <button type="submit">Сохранить изменения</button>
+    </form>
+}

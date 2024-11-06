@@ -1,0 +1,67 @@
+﻿@page
+@model WebApplication2.Pages.ClientsModel
+
+<h2>Клиенты</h2>
+
+<form method="post" asp-page-handler="Create">
+    <h3>Добавить клиента</h3>
+    <input type="text" name="FullName" required placeholder="ФИО" />
+    <input type="text" name="Phone" required placeholder="Телефон" />
+    <input type="email" name="Email" placeholder="Email" />
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="post" asp-page-handler="Search">
+    <h3>Поиск клиентов</h3>
+    <input type="text" name="searchTerm" placeholder="Поиск по ФИО или телефону..." />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.Clients == null || !Model.Clients.Any())
+{
+    <p>Нет клиентов.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Телефон</th>
+                <th>Email</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model.Clients)
+            {
+                <tr>
+                    <td>@client.ClientID</td>
+                    <td>@client.FullName</td>
+                    <td>@client.Phone</td>
+                    <td>@client.Email</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="clientID" value="@client.ClientID" />
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <a asp-page-handler="Edit" asp-route-clientID="@client.ClientID">Редактировать</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Client != null)
+{
+    <h3>Редактировать клиента</h3>
+    <form method="post" asp-page-handler="Edit">
+        <input type="hidden" name="ClientID" value="@Model.Client.ClientID" />
+        <input type="text" name="FullName" value="@Model.Client.FullName" required />
+        <input type="text" name="Phone" value="@Model.Client.Phone" required />
+        <input type="email" name="Email" value="@Model.Client.Email" />
+        <button type="submit">Сохранить изменения</button>
+    </form>
+}

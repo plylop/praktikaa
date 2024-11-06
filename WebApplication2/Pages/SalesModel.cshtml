@@ -1,0 +1,71 @@
+﻿@page
+@model WebApplication2.Pages.SalesModel
+
+<h2>Продажи</h2>
+
+<form method="post" asp-page-handler="Create">
+    <h3>Добавить продажу</h3>
+    <input type="date" name="Date" required placeholder="Дата" />
+    <input type="number" name="TotalAmount" required placeholder="Сумма" />
+    <input type="number" name="ClientID" required placeholder="ID Клиента" />
+    <input type="number" name="PharmacyID" required placeholder="ID Аптеки" />
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="post" asp-page-handler="Search">
+    <h3>Поиск продаж</h3>
+    <input type="text" name="searchTerm" placeholder="Поиск по ID Клиента или Аптеки..." />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.Sales == null || !Model.Sales.Any())
+{
+    <p>Нет продаж.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Дата</th>
+                <th>Сумма</th>
+                <th>ID Клиента</th>
+                <th>ID Аптеки</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var sale in Model.Sales)
+            {
+                <tr>
+                    <td>@sale.SaleID</td>
+                    <td>@sale.Date.ToShortDateString()</td>
+                    <td>@sale.TotalAmount</td>
+                    <td>@sale.ClientID</td>
+                    <td>@sale.PharmacyID</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="saleID" value="@sale.SaleID" />
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <a asp-page-handler="Edit" asp-route-saleID="@sale.SaleID">Редактировать</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Sale != null)
+{
+    <h3>Редактировать продажу</h3>
+    <form method="post" asp-page-handler="Edit">
+        <input type="hidden" name="SaleID" value="@Model.Sale.SaleID" />
+        <input type="date" name="Date" value="@Model.Sale.Date.ToString("yyyy-MM-dd")" required />
+        <input type="number" name="TotalAmount" value="@Model.Sale.TotalAmount" required />
+        <input type="number" name="ClientID" value="@Model.Sale.ClientID" required />
+        <input type="number" name="PharmacyID" value="@Model.Sale.PharmacyID" required />
+        <button type="submit">Сохранить изменения</button>
+    </form>
+}

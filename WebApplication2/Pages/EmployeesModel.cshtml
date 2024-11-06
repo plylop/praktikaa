@@ -1,0 +1,67 @@
+﻿@page
+@model WebApplication2.Pages.EmployeesModel
+
+<h2>Сотрудники</h2>
+
+<form method="post" asp-page-handler="Create">
+    <h3>Добавить сотрудника</h3>
+    <input type="text" name="FullName" required placeholder="ФИО" />
+    <input type="text" name="Position" required placeholder="Должность" />
+    <input type="number" name="PharmacyID" required placeholder="ID Аптеки" />
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="post" asp-page-handler="Search">
+    <h3>Поиск сотрудников</h3>
+    <input type="text" name="searchTerm" placeholder="Поиск по ФИО или должности..." />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.Employees == null || !Model.Employees.Any())
+{
+    <p>Нет сотрудников.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Должность</th>
+                <th>ID Аптеки</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model.Employees)
+            {
+                <tr>
+                    <td>@employee.EmployeeID</td>
+                    <td>@employee.FullName</td>
+                    <td>@employee.Position</td>
+                    <td>@employee.PharmacyID</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="employeeID" value="@employee.EmployeeID" />
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <a asp-page-handler="Edit" asp-route-employeeID="@employee.EmployeeID">Редактировать</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Employee != null)
+{
+    <h3>Редактировать сотрудника</h3>
+    <form method="post" asp-page-handler="Edit">
+        <input type="hidden" name="EmployeeID" value="@Model.Employee.EmployeeID" />
+        <input type="text" name="FullName" value="@Model.Employee.FullName" required />
+        <input type="text" name="Position" value="@Model.Employee.Position" required />
+        <input type="number" name="PharmacyID" value="@Model.Employee.PharmacyID" required />
+        <button type="submit">Сохранить изменения</button>
+    </form>
+}

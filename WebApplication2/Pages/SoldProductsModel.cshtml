@@ -1,0 +1,67 @@
+﻿@page
+@model WebApplication2.Pages.SoldProductsModel
+
+<h2>Проданные лекарства</h2>
+
+<form method="post" asp-page-handler="Create">
+    <h3>Добавить проданное лекарство</h3>
+    <input type="number" name="SaleID" required placeholder="ID Продажи" />
+    <input type="number" name="MedicineID" required placeholder="ID Лекарства" />
+    <input type="number" name="Quantity" required placeholder="Количество" />
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="post" asp-page-handler="Search">
+    <h3>Поиск проданных лекарств</h3>
+    <input type="text" name="searchTerm" placeholder="Поиск по ID лекарства..." />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.SoldMedicines == null || !Model.SoldMedicines.Any())
+{
+    <p>Нет проданных лекарств.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID Продажи</th>
+                <th>ID Лекарства</th>
+                <th>Количество</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var soldProduct in Model.SoldMedicines)
+            {
+                <tr>
+                    <td>@soldProduct.ID</td>
+                    <td>@soldProduct.SaleID</td>
+                    <td>@soldProduct.MedicineID</td>
+                    <td>@soldProduct.Quantity</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="id" value="@soldProduct.ID" />
+                            <button type="submit">Удалить</button>
+                        </form>
+                        <a asp-page-handler="Edit" asp-route-id="@soldProduct.ID">Редактировать</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.SoldMedicine != null)
+{
+    <h3>Редактировать проданное лекарство</h3>
+    <form method="post" asp-page-handler="Edit">
+        <input type="hidden" name="ID" value="@Model.SoldMedicine.ID" />
+        <input type="number" name="SaleID" value="@Model.SoldMedicine.SaleID" required />
+        <input type="number" name="MedicineID" value="@Model.SoldMedicine.MedicineID" required />
+        <input type="number" name="Quantity" value="@Model.SoldMedicine.Quantity" required />
+        <button type="submit">Сохранить изменения</button>
+    </form>
+}
