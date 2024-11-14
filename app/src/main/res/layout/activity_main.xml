@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/button_pharmacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Аптека"
+            android:onClick="openPharmacy" />
+
+        <Button
+            android:id="@+id/button_medicines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Лекарства"
+            android:onClick="openMedicines" />
+
+        <Button
+            android:id="@+id/button_employees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сотрудники"
+            android:onClick="openEmployees" />
+
+        <Button
+            android:id="@+id/button_clients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Клиенты"
+            android:onClick="openClients" />
+
+        <Button
+            android:id="@+id/button_sales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Продажи"
+            android:onClick="openSales" />
+
+        <Button
+            android:id="@+id/button_sale_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Детали продажи"
+            android:onClick="openSaleDetails" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
